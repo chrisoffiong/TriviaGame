@@ -1,0 +1,23 @@
+
+.jumbotron {
+   height: 100%;
+    background-image: url("../images/bg.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: rgb(95, 30, 57);
+    font-weight: bolder;
+}
+
+body {
+    font-family: 'Acme', sans-serif;
+   
+}
+
+#c1:hover, #c2:hover, #c3:hover, #c4:hover {
+    background-color: rgba(0, 0, 0, 0.336);
+    cursor: pointer;
+}
+.questions, .timer, .unguessed {
+    text-align: center;
+}
