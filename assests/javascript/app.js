@@ -6,7 +6,7 @@ var questions = [
     },
     {
         question: "What is the third digit of pi?",
-        answer: 3,
+        answer: 2,
         choices: ["8", "3", "4", "Mmmmm.."]
     },
     {
@@ -31,73 +31,83 @@ var questions = [
     }]
 
 
-for (let i = 0; i < questions[0].choices.length; i++) {
+let questionsAnswered = 0;
+let answersWrong = 0;
+let answersRight = 0;
+let unGuessed = 0;
+let twentySecondsTimer = 20;
+let randomQuestion = Math.floor(Math.random() * questions.length);
+let currentQuestion = questions[randomQuestion];
+let timer;
+let p = $("p")
 
-    // display into the
-}
+$('button').on('click', loadQuestion(), startCounter());
+function startCounter() {
+    twentySecondsTimer--;
+    $('.timer').html('Timer: ' + twentySecondsTimer);
+    if (twentySecondsTimer === 0) {
+        unGuessed++;
+        $(".unguessed").html("Unguessed questions:" + unGuessed)
+        alert("Times Up! Correct Answer is" + " " + currentQuestion.choices[currentQuestion.answer])
+        reset();
 
-let questionsAnswered = 0
-let answersWrong = 0
-let answersRight = 0
-let unGuessed = 0
-let twentySecondsTimer = 20
-let randomQuestion = Math.floor(Math.random() * questions.length)
-let currentQuestion = questions[randomQuestion]
-
-function nextQuestion() {
-    twentySecondsTimer = 20
-    randomQuestion = Math.floor(Math.random() * questions.length)
-    currentQuestion = questions[randomQuestion]
-    let timer = setInterval(function () {
-        
-        $(".timer").html("Time:" + twentySecondsTimer)
-        twentySecondsTimer--;
-        if (twentySecondsTimer <= 0) {
-            clearInterval(timer);
-            unGuessed++;
-        }
-    }, 1000)
-    $('#q1').text(currentQuestion.question);
-    $('#c1').html(currentQuestion.choices[0])
-    $('#c2').html(currentQuestion.choices[1])
-    $('#c3').html(currentQuestion.choices[2])
-    $('#c4').html(currentQuestion.choices[3])
-    if (questionsAnswered = 3) {
-        $(".questions").hide()
-        $(".right").show()
-        $(".wrong").show()
     }
-
+};
+function loadQuestion() {
+    clearTimeout(timer);
+    $('button').remove()
+    $('.questions').empty();
+    if(questionsAnswered < 3) {
+    $('.questions').show()
+    }
+    currentQuestion = questions[randomQuestion]
+    $('.questions').html(currentQuestion.question + "<br>")
+    timer = setInterval(startCounter, 1000);
+    $('.timer').html('Timer: ' + twentySecondsTimer);
+    for (let i = 0; i < questions[randomQuestion].choices.length; i++) {
+        const randomSelected = questions[randomQuestion].choices[i];
+        $('.questions').append(`<p data-name='${randomSelected}'> ${randomSelected}`);
+    }
+    if( questionsAnswered >= 3) {
+        if( answersRight >= 2) {
+            $(".winner").html("You win!")
+        }
+        else {
+            $(".winner").html("You Lose! Try Again!")
+        }
+        $('questions').empty()
+        $('questions').hide()
+        $('.timer').empty()
+        clearInterval(timer)
+        $('.right').show()
+        $('.wrong').show()
+        
+    }
+    console.log(questionsAnswered)
+    
 }
-$("button").on("click", function () {
-    $("button").hide();
-    $('#q1').text(currentQuestion.question);
-    $('#c1').append(currentQuestion.choices[0])
-    $('#c2').append(currentQuestion.choices[1])
-    $('#c3').append(currentQuestion.choices[2])
-    $('#c4').append(currentQuestion.choices[3])
-    let timer = setInterval(function () {
-        twentySecondsTimer--;
-        $(".timer").html("Time:" + twentySecondsTimer)
-        if (twentySecondsTimer <= 0) {
-            clearInterval(timer);
-            questionsAnswered++;
-            unGuessed++;
-            $(".unguessed").html("Unguessed questions:" + unGuessed)
-            alert("Times Up! Correct Answer is" + " " + currentQuestion.choices[currentQuestion.answer])
-            nextQuestion();
-        };
-    }, 1000)
-})
-$(".questions").on("click", function (event) {
-    if (event = currentQuestion.choices[currentQuestion.answer]) {
+
+function reset() {
+   
+    twentySecondsTimer = 20;
+    randomQuestion = Math.floor(Math.random() * questions.length);
+    clearInterval(timer);
+    setTimeout(loadQuestion, 1500); 
+    $(".questions").hide()
+   
+};
+
+$(document).on('click', 'p', function() {
+    const value = $(this).attr('data-name');
+    if(value === currentQuestion.choices[currentQuestion.answer]) {
         answersRight++;
         alert("Correct!")
         $(".right").hide()
         $(".right").html("Number right:" + answersRight)
         questionsAnswered++;
-        nextQuestion();
-
+        loadQuestion();
+        reset()
+        
     }
     else {
         answersWrong++;
@@ -105,14 +115,10 @@ $(".questions").on("click", function (event) {
         $(".wrong").hide()
         $(".wrong").html("Number wrong:" + answersWrong)
         questionsAnswered++;
-        nextQuestion();
+        loadQuestion();
+        reset()
     }
-})
+    ;
+});
 
 
-
-/* if(this.choices === this.answer){
-    div.style.backgroundColor = "green";
-}else{
-    div.style.backgroundColor = "red";
-}*/

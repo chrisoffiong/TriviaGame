@@ -14,10 +14,12 @@ body {
    
 }
 
-#c1:hover, #c2:hover, #c3:hover, #c4:hover {
-    background-color: rgba(0, 0, 0, 0.336);
-    cursor: pointer;
-}
-.questions, .timer, .unguessed {
+
+.questions, .timer, .unguessed, .right, .wrong, .winner {
     text-align: center;
+}
+
+p:hover {
+    background-color: rgba(73, 57, 57, 0.548);
+    cursor: pointer;
 }
