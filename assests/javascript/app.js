@@ -47,11 +47,13 @@ $(".btn-primary").on("click", function(){
     questionsAnswered = 0
     answersWrong = 0
     answersRight = 0
+    unGuessed = 0
     $(".right").hide()
     $(".wrong").hide()
     loadQuestion();
     reset();
     $(".winner").hide()
+    $(".unguessed").hide()
 })
 //starts the game on a button press
 //Button disappears before pressed??
@@ -63,6 +65,7 @@ function startCounter() {
     //if the timer hits 0, number unguessed goes up and timer resets
     if (twentySecondsTimer === 0) {
         unGuessed++;
+        $(".unguessed").show()
         questionsAnswered++
         $(".unguessed").html("Unguessed questions:" + unGuessed)
         alert("Times Up! Correct Answer is" + " " + currentQuestion.choices[currentQuestion.answer])
