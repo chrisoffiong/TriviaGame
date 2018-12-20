@@ -40,10 +40,22 @@ let twentySecondsTimer = 20;
 let randomQuestion = Math.floor(Math.random() * questions.length);
 let currentQuestion = questions[randomQuestion];
 let timer;
-let p = $("p")
+
+//reset button
+$(".btn-primary").on("click", function(){
+    twentySecondsTimer = 20
+    questionsAnswered = 0
+    answersWrong = 0
+    answersRight = 0
+    $(".right").hide()
+    $(".wrong").hide()
+    loadQuestion();
+    reset();
+    $(".winner").hide()
+})
 //starts the game on a button press
 //Button disappears before pressed??
-$('button').on('click', loadQuestion(), startCounter());
+$('.btn-warning').on('click', loadQuestion(), startCounter());
 //function that starts the timer
 function startCounter() {
     twentySecondsTimer--;
@@ -51,16 +63,18 @@ function startCounter() {
     //if the timer hits 0, number unguessed goes up and timer resets
     if (twentySecondsTimer === 0) {
         unGuessed++;
+        questionsAnswered++
         $(".unguessed").html("Unguessed questions:" + unGuessed)
         alert("Times Up! Correct Answer is" + " " + currentQuestion.choices[currentQuestion.answer])
         reset();
 
     }
 };
+
 //function that loads questions
 function loadQuestion() {
     clearTimeout(timer);
-    $('button').remove()
+    $('.btn-warning').remove()
     $('.questions').empty();
     //stops questions from showing if you answer 3
     if(questionsAnswered < 3) {
@@ -77,11 +91,14 @@ function loadQuestion() {
     }
     //if you answers two or more questions right you win
     if( questionsAnswered >= 3) {
+        twentySecondsTimer = 0
         if( answersRight >= 2) {
+            $(".winner").show()
             $(".winner").html("You win!")
         }
     //if not you lose
         else {
+            $(".winner").show()
             $(".winner").html("You Lose! Try Again!")
         }
         $('questions').empty()
@@ -92,8 +109,6 @@ function loadQuestion() {
         $('.wrong').show()
         
     }
-    console.log(questionsAnswered)
-    
 }
 //reset function that resests timer and sets a delay before next question
 function reset() {
